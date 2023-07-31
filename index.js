@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.use(cors({origin : 'https://roaring-cocada-71ee72.netlify.app', credentials : true}))
+app.use(cors({origin : 'https://cart-app-ethiopia.netlify.app', credentials : true, cro}))
 app.use(helemt())
 helemt.crossOriginResourcePolicy({policy : 'cross-origin'})
 app.use(cookieParser())
