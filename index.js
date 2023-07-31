@@ -9,10 +9,15 @@ import { userRouter } from './Routers/user.router.js'
 import { routerPorduct } from './Routers/product.router.js'
 import { routerCart } from './Routers/cart.router.js'
 import { routerPayment } from './Stripe/StripeRouter.js'
+import crypto from 'crypto'
 let app = express()
 dotenv.config()
 app.use(morgan('combined'))
 app.use(express.json())
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString('base64');
+  next();
+});
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
