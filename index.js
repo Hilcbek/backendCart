@@ -25,9 +25,9 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.use(cors({origin : 'https://roaring-cocada-71ee72.netlify.app/', credentials : true}))
+app.use(cors({origin : 'https://roaring-cocada-71ee72.netlify.app', credentials : true}))
 app.use(helemt())
-helemt.crossOriginResourcePolicy({policy : 'same-site'})
+helemt.crossOriginResourcePolicy({policy : 'cross-origin'})
 app.use(cookieParser())
 mongoose.connect(process.env.MONGODB).then((res) => app.listen(process.env.PORT,() => console.log('app is running'))).catch((err) => console.error(err))
 mongoose.connection.on('connected',() => console.log('mongodb connected once again!'))
