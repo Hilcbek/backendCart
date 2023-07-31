@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 app.use(cors({origin : 'https://cart-app-ethiopia.netlify.app', credentials : true}))
 app.use(helemt())
-helemt.crossOriginResourcePolicy({policy : 'cross-origin'})
+helemt.crossOriginResourcePolicy({policy : 'same-site'})
 app.use(cookieParser())
 mongoose.connect(process.env.MONGODB).then((res) => app.listen(process.env.PORT,() => console.log('app is running'))).catch((err) => console.error(err))
 mongoose.connection.on('connected',() => console.log('mongodb connected once again!'))
