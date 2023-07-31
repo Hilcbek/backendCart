@@ -44,7 +44,7 @@ export let Login = async (req,res,next) => {
         let Password = await bcrypt.compare(password,Username[0].password);
         if (!Password) return next(ErrorSettler(500,'wrong username or password'));
         let token = jwt.sign({id : Username[0]._id},process.env.JWT,{expiresIn : '2d'});
-        res.cookie('token',token,{ HttpOnly : true}).status(200).json({data : Username})
+        res.cookie('token',token,{ HttpOnly : true, sameSite: 'strict'}).status(200).json({data : Username})
     } catch (error) {
         next(error)
     }
