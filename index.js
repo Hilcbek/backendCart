@@ -13,6 +13,13 @@ let app = express()
 dotenv.config()
 app.use(morgan('combined'))
 app.use(express.json())
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self' 'unsafe-inline';"
+  );
+  next();
+});
 app.use(cors({origin : 'http://localhost:5173', credentials : true}))
 app.use(helemt())
 helemt.crossOriginResourcePolicy({policy : 'same-site'})
