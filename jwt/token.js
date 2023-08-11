@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken'
 import {ErrorSettler} from '../Error/Error.js'
 export let verifyIsUserLoggedIn = (req,res,next) => {
     try {
-        let token = req.cookies.token;
-        if(!token) return next(ErrorSettler(500, 'please login first'))
+        let authHeaders = req.headers.token;
+        if(!authHeaders) return next(ErrorSettler(500, 'please login first'))
+        let token = authHeaders.split(" ")[1]
         jwt.verify(token,process.env.JWT,(err,payload) => {
             if(err) return next(ErrorSettler(500, 'token expired!'))
             req.user = payload;
