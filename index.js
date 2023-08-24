@@ -14,6 +14,7 @@ let app = express()
 dotenv.config()
 app.use(morgan('combined'))
 app.use(express.json())
+app.use(express.urlencoded({ extended : false }))
 app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString('base64');
   next();
