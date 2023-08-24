@@ -5,5 +5,5 @@ export let routerCart = express.Router();
 routerCart.post('/addtocart/:id',verifyIsUserLoggedIn ,AddToCart)
 routerCart.get('/loggedusercart', verifyIsUserLoggedIn, cartToUser)
 routerCart.delete('/removecart/:id',verifyIsUserLoggedIn ,RemoveItemFromCart)
-routerCart.get('/',verifyisUserAdmin,verifyIsUserLoggedIn, AllCart)
+routerCart.get('/',verifyisUserAdmin, AllCart)
 routerCart.delete('/', verifyIsUserLoggedIn, RemoveAllCartFromUser);
