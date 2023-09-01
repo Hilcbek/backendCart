@@ -2,7 +2,8 @@ import { ErrorSettler } from "../Error/Error.js";
 import User from "../models/user.model.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-export let Register = async (req,res,next) => {
+import asyncHandler from 'express-async-handler'
+export let Register = asyncHandler(async (req,res,next) => {
     try {
         let genSalt = await bcrypt.genSalt(10)
         let {username ,email, password} = req.body;
@@ -19,8 +20,8 @@ export let Register = async (req,res,next) => {
     } catch (error) {
         next(error)
     }
-}
-export let UpdateProfile = async (req,res,next) => {
+})
+export let UpdateProfile = asyncHandler(async (req,res,next) => {
     try {
         let { id } = req.params;
         let UpdatedUserProfile = await User.findByIdAndUpdate(id,{
@@ -32,8 +33,8 @@ export let UpdateProfile = async (req,res,next) => {
     } catch (error) {
         next(error)
     }
-}
-export let Login = async (req,res,next) => {
+})
+export let Login = asyncHandler(async (req,res,next) => {
     try {
         let {useEmail,password} = req.body;
         if(!useEmail || !password) return next(ErrorSettler(500,'all credintails are required!'))
@@ -43,8 +44,17 @@ export let Login = async (req,res,next) => {
         }
         let Password = await bcrypt.compare(password,Username[0].password);
         if (!Password) return next(ErrorSettler(500,'wrong username or password'));
-        let token = jwt.sign({id : Username[0]._id},process.env.JWT,{expiresIn : '2d'});
-        res.cookie('token',token,{ HttpOnly : true, sameSite: 'strict'}).status(200).json({data : Username})
+        jwt.sign({id : Username[0]._id},process.env.JWT,{expiresIn : '2d'}, (err,payload) => {
+            if(err) next(ErrorSettler(500, 'error while generating token!'))
+            res.cookie('token',payload,{ HttpOnly : true, sameSite: 'strict'}).status(200).json({data : Username})
+        });
+    } catch (error) {
+        next(error)
+    }
+})
+export let Logout = async (req,res,next) => {
+    try {
+        res.clearCookie('token').status(200).json({ data : 'logged out!'})
     } catch (error) {
         next(error)
     }

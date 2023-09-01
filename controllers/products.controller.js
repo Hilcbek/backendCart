@@ -1,6 +1,7 @@
 import { ErrorSettler } from '../Error/Error.js'
 import Product from '../models/product.model.js'
-export let Add = async (req,res,next) => {
+import asyncHandler from 'express-async-handler'
+export let Add = asyncHandler(async (req,res,next) => {
     try {
         let {Pname, type, desc, price} = req.body
         if (!Pname || !type || !desc || !price) return next(ErrorSettler(500,'all information are required!'))
@@ -11,12 +12,12 @@ export let Add = async (req,res,next) => {
     } catch (error) {
         next(error)
     }
-}
-export let AllProducts = async (req,res,next) => {
+})
+export let AllProducts = asyncHandler(async (req,res,next) => {
     try {
         let AllPro = await Product.find({}).sort({ createdAt : -1 })
         res.status(200).json({data  : AllPro})
     } catch (error) {
         next(error)
     }
-}
+})

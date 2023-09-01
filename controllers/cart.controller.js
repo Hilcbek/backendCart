@@ -1,6 +1,7 @@
 import Cart from '../models/cart.model.js'
 import Product from '../models/product.model.js'
-export let AddToCart = async (req,res,next) => {
+import asyncHandler from 'express-async-handler'
+export let AddToCart = asyncHandler(async (req,res,next) => {
     try {
         let { id } = req.params
         let { amount } = req.body;
@@ -38,16 +39,16 @@ export let AddToCart = async (req,res,next) => {
     } catch (error) {
         next(error)
     }
-}
-export let cartToUser = async (req,res,next) => {
+})
+export let cartToUser = asyncHandler(async (req,res,next) => {
     try {
         let UserCart = (await Cart.find({user_id : req.user.id}).populate('cartProduct'))
         res.status(200).json(UserCart)
     } catch (error) {
         next(error)
     }
-}
-export let RemoveItemFromCart = async (req,res,next) => {
+})
+export let RemoveItemFromCart = asyncHandler(async (req,res,next) => {
     try {
         let { id } = req.params
         let IsUserHasCart = await Cart.findOne({user_id : req.user.id}).populate('cartProduct');
@@ -62,20 +63,20 @@ export let RemoveItemFromCart = async (req,res,next) => {
     } catch (error) {
         next(error)
     }
-}
-export let RemoveAllCartFromUser = async (req,res,next) => {
+})
+export let RemoveAllCartFromUser = asyncHandler(async (req,res,next) => {
     try {
         await Cart.findOneAndDelete({user_id : req.user.id});
         res.status(200).json({ data : 'User Cart user Cleaned!'})
     } catch (error) {
         
     }
-}
-export let AllCart = async (req,res,next) => {
+})
+export let AllCart = asyncHandler(async (req,res,next) => {
     try {
         let AllCartData = await Cart.find({}).sort({createdAt : -1 }).populate('cartProduct')
         res.status(200).json({data : AllCartData})
     } catch (error) {
         next(error)
     }
-}
+})
