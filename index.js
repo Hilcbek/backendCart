@@ -14,18 +14,6 @@ let app = express()
 dotenv.config()
 app.use(morgan('combined'))
 app.use(express.json())
-app.use(express.urlencoded({ extended : false }))
-app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(16).toString('base64');
-  next();
-});
-app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self' 'unsafe-inline';"
-  );
-  next();
-});
 app.use(cors({origin : 'https://cart-app-ethiopia.netlify.app', credentials : true}))
 app.use(helemt())
 helemt.crossOriginResourcePolicy({policy : 'same-site'})
