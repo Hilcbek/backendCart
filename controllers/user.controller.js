@@ -45,8 +45,8 @@ export let Login = asyncHandler(async (req,res,next) => {
         let Password = await bcrypt.compare(password,Username[0].password);
         if (!Password) return next(ErrorSettler(500,'wrong username or password'));
         jwt.sign({id : Username[0]._id},process.env.JWT,{expiresIn : '2d'}, (err,payload) => {
-            if(err) next(ErrorSettler(500, 'error while generating token!'))
-            res.cookie('token',payload,{ HttpOnly : true, sameSite: 'strict'}).status(200).json({data : Username})
+            if(err) return next(ErrorSettler(500, 'error while generating token!'))
+            res.cookie('token',payload).status(200).json({data : Username})
         });
     } catch (error) {
         next(error)
